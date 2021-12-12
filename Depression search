@@ -1,3 +1,13 @@
+library(jsonlite)
+library(httr)
+
+## Replace the bearer token below with
+bearer_token = ""
+
+headers = c(
+  `Authorization` = sprintf('Bearer %s', bearer_token)
+)
+
 ##################################################################################
 ##### Search for Tweets including # I have been diagnosed with depression ########
 ##################################################################################
