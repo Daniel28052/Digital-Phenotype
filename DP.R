@@ -1,0 +1,46 @@
+library(jsonlite)
+library(httr)
+
+## Replace the bearer token below with
+bearer_token = ""
+
+headers = c(
+  `Authorization` = sprintf('Bearer %s', bearer_token)
+)
+
+##################################################################################
+##### Search for Tweets including # I have been diagnosed with depression ########
+##################################################################################
+## Set Parameters
+params_1 = list(
+  'query'= 'I have been diagnosed with depression',
+  'start_time'= "2020-12-31T00:00:00Z",
+  'max_results'= '500',
+  'user.fields'='id,name,username',
+  'place.fields'= 'contained_within,country,country_code,full_name,geo,id,name,place_type'
+)
+
+## Ask for response
+response_1 <- httr::GET(
+  url = 'https://api.twitter.com/2/tweets/search/all?query=
+  I have been diagnosed with depression
+  &start_time=2020-12-31T00:00:00Z
+  &max_results=100&place.fields=contained_within,country,country_code,full_name,geo,id,name,place_type
+  &user.fields=id,name,username', 
+  httr::add_headers(.headers=headers), 
+  query = params_1)
+
+## Looking at the response status
+response_1$status_code
+
+## Getting content
+depression <-
+  content(
+    response_1,
+    as = 'parsed',
+    type = 'application/json',
+    simplifyDataFrame = TRUE
+  )
+
+## User list in the response object
+View(depression)
